@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+	<!-- Global site tag (gtag.js) - Google Analytics -->
+	<script async src="https://www.googletagmanager.com/gtag/js?id=UA-166078832-1"></script>
+		<script>
+		  window.dataLayer = window.dataLayer || [];
+		  function gtag(){dataLayer.push(arguments);}
+		  gtag('js', new Date());
+
+		  gtag('config', 'UA-166078832-1');
+	</script>
+	<!-- Global site tag (gtag.js) - Google Analytics -->
+	
+	<title>Hasta 30 min</title>
+	<link rel="shortcut icon" type="img/x-icon" href="img/favicon.ico">
+	<meta charset="utf-8" />
+	<meta name="description" content="Calcule las áreas (Isócronas) que puede recorrer en un tiempo de hasta 30 mins. Solo debe mover el pin del mapa y este le mostrará las zonas a 5, 10, 20 y 30 minutos desde el punto escogido. Una aportacíon de la Càtedra de Govern Obert de València">
+	
+	<meta name="web_author" description="https://risweb.st-andrews.ac.uk/portal/en/persons/manuel-fernando-benitez-paez(300159a8-c922-4c83-9570-aefbcc8c32e0).html">
+	
+		
+	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+	<link rel="stylesheet" href="assets/css/main.css" />
+	<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+		
+			
+	<!--  Include leaflet javascript and css -->
+	<link rel="stylesheet" href="leaflet/leaflet.css">
+	<script src="leaflet/leaflet-src.js" crossorigin=""></script>
+		<!--  Include targomo leaflet full build -->
+		<script src="https://releases.targomo.com/leaflet/latest-full.min.js"></script>
+		<!--  Include micro progress bar  -->
+		<script src="https://targomo.com/developers/scripts/mipb.min.js"></script>
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	
+    <style>
+	
+	
+<!--         body,
+        html {
+            margin: 0;
+            width: 100%;
+            height: 100%;
+        } -->
+
+		
+        .button-group {
+            position: absolute;
+            right: 26px;
+            top: 75px;
+            z-index: 1000;
+            box-shadow: 0 1px 5px rgba(0, 0, 0, .4);
+            background-color: rgba(255, 255, 255, 1);
+        }
+        .buttonmap {
+            font-family: sans-serif;
+            text-transform: uppercase;
+            color: #666;
+            cursor: pointer;
+            padding: 10px 10px 8px 10px;
+            display: inline-block;
+            font-size: 14px;
+        }
+        .buttonmap:hover {
+            background-color: #EEE;
+        }
+        .buttonmap.active {
+            color: #50B0B5;
+        }
+		
+		.legendmap {
+            position: absolute;
+            top: 0px;
+			left: 2px;
+            width: 100%;
+            z-index: 1000;
+            display: flex;
+            justify-content: center;
+        }
+
+        .legendmap .containermap {
+            width: 75%;
+            max-width: 400px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .legendmap .containermap .cellmap {
+            text-align: center;
+            padding: 5px 0;
+            color: white;
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 14px;
+            min-width: 60px;
+        }
+		
+		#map
+		{
+			width: 100px;
+			height:600px;
+			min-height: 100%;
+			min-width: 100%;
+			display: block;
+		}
+
+		#map-holder{
+			height: 100%;
+			width: 100%;
+		}
+
+		.fill
+		{
+			min-height: 100%;
+			height: 100%;
+			width: 100%;
+			max-width: 100%;
+		}
+
+		.container{
+			max-width:100em;
+			padding: 0.2em;
+		}
+		
+	
+				
+    </style>
+</head>
+
+<body class="is-preload">
+
+	
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+	<link rel="stylesheet" href="leaflet/leaflet.css" />
+	<script src="leaflet/leaflet.js"></script>
+	<link rel="stylesheet" href="leaflet.zoomhome.css"/>
+	<script src="leaflet.zoomhome.min.js"></script>
+	<link rel="stylesheet" href="L.Control.Locate.min.css" />
+	<script src="L.Control.Locate.min.js"></script>
+	
+	
+	<!-- Page Wrapper -->
+			<div id="page-wrapper">
+
+				<!-- Header -->
+					<header id="header">
+
+						<span class="image left"><img src="images/Logo-Catedra-def.png" alt="" /></span><h1><a href="index.html">30 min</a></h1>
+
+						<nav>
+
+							<a href="#" class="button small">Cas</a>
+							<a href="valencia.html" class="button small">Val</a>
+							<a href="#menu">Más info</a>
+						</nav>
+					</header>
+					
+				<!-- Menu -->
+					<nav id="menu">
+						<div class="inner">
+							
+							<p align="justify"><b>Como se usa: </b>Esta app calcula las áreas (isócronas) que puede recorrer caminando, en bicicleta o en coche, en un tiempo máximo de 30 minutos. Solo debe arrastrar el pin del mapa hasta la ubicación que desee y calculará las zonas que puede recorrer en 5, 10, 20 y 30 minutos. Puede alejarse en el mapa con los botones de acercar y alejar para ver su ciudad o pueblo, y luego arrastrar el pin hacia un sitio conocido y ajustarlo nuevamente, además, puede cambiar el modo de transporte. En móviles use los espacios en blanco laterales para navegar sobre el sitio.</p>
+							
+							<p align="justify"><b>Mapa de Isócronas: </b>Un mapa de isócronas es una herramienta de planeación urbana y de transporte que determina los polígonos que describen las áreas con un mismo tiempo de viaje.</p>
+							
+							<p align="justify"><b>Sobre esta App: </b>Esta aplicación es un aporte de la Càtedra de Govern Obert (Universitat Politècnica de València- Ajuntament de València), ante la desescalada de las medidas de confinamiento por la actual crisis sanitaria provocada por el COVID-19. Si desea contribuir con esta aplicación o quiere aportar una sugerencia, no dude en contactarnos en catedrago@upv.es.</p>
+							
+							<p align="justify"><b>Cáracteristicas: </b>Esta app utiliza Open Street Map como mapa de referencia, la librería JavaScript de Código Abierto Leaflet para mapas y la API de Targomo para el cálculo de los polígonos isócronos desplegados en el mapa. No capturamos información personal o la ubicación de los usuarios en ningún momento, ni se persigue ningún fin comercial, es una aportación para mostrar el potencial de los datos y aplicaciones geográficas para mejorar la vida de las personas.</p>
+							
+							<a href="#" class="close">Close</a>
+						</div>
+					</nav>
+					
+				<!-- Wrapper -->
+					<section id="wrapper">
+
+
+						<!-- Content -->
+							<div class="wrapper">
+								
+								<div class="inner">
+									<div id="map-holder">
+									  <div class="container fill">
+										<div id="map">
+											<div class="legendmap">
+												<div class="containermap"></div>
+											</div>
+										</div>
+									  
+										<div id="selectionBar" class="button-group">
+											<div id="btn-walk" onclick="setData('walk')" class="buttonmap">Caminando</div>
+											<div id="btn-bike" onclick="setData('bike')" class="buttonmap active">Bici</div>
+											<div id="btn-car" onclick="setData('car')" class="buttonmap">Coche</div>
+											
+										</div>
+										
+										
+									  </div>
+									  
+									</div>
+								</div>
+							</div>
+					</section>
+				<!-- Footer -->
+					<section id="footer">
+						<div class="inner">			
+							<ul class="copyright" style="font-size: 14pt">
+								<li>Iniciativa: <a href="https://catgo.webs.upv.es/">Càtedra de Govern Obert</a></li>
+								<li>Ánalisis de tiempos de viaje por: <a href="https://targomo.com/developers/attribution">Targomo</a></li>
+								<li>Mapa de referencia: <a href="https://www.openstreetmap.org/">Open Street Map</a></li>
+								<li>Implementación: <a href="https://risweb.st-andrews.ac.uk/portal/en/persons/manuel-fernando-benitez-paez(300159a8-c922-4c83-9570-aefbcc8c32e0).html">Fernando Benitez</a> - <a href="http://www.upv.es/ficha-personal/nuporpob">Nuria Portillo</a></li>
+								<li>Diseño: <a href="http://html5up.net">HTML5 UP</a></li>
+								
+							</ul>
+						</div>
+					</section>
+
+			</div>	
+					
+	<!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/jquery.scrollex.min.js"></script>
+			<script src="assets/js/browser.min.js"></script>
+			<script src="assets/js/breakpoints.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<script src="assets/js/main.js"></script>
+			<script src="assets/js/mapapp.js"></script>
+</body>
+
+</html>  
+            
+        
