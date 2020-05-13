@@ -1,5 +1,5 @@
         // create targomo client
-        const client = new tgm.TargomoClient('westcentraleurope', 'ZTXRL27QJJ58JUQUMPA3243119090');
+        const client = new tgm.TargomoClient('westcentraleurope', 'PO3KA4C4RRHWKMYMYKPS244654364');
         // set the progress bar
         const pBar = new mipb({ fg: "#FF8319", style: { zIndex: 500 } });
         // define the basemap
@@ -13,7 +13,7 @@
 		
         // Coordinates to center the map
         const center = [39.46, -0.37];
-
+		var geocoder = L.Control.Geocoder.nominatim();
         // define the map
         var mymap = L.map('map', {
             layers: [tileLayer],
@@ -22,7 +22,14 @@
         }).setView(center, 10);
 		var zoomHome = L.Control.zoomHome();
 		zoomHome.addTo(mymap);
-		/* L.control.locate({position: 'topleft',}).addTo(mymap); */
+/* 		var geocoder = L.Control.geocoder().addTo(mymap);
+ */		/* L.control.locate({position: 'topleft',}).addTo(mymap); */
+		L.Control.geocoder({
+			position: 'topleft',
+			suggestMinLength:'3',
+			placeholder:'Buscar...',
+			geocoder: geocoder
+		  }).addTo(mymap);
 		
 		
         // set the attribution
@@ -36,12 +43,17 @@
 		//Group of layers (Markers, Polygons)	
 		var mark = L.layerGroup();
 		
-
+/* 		L.marker([51.930083,4.507742], {icon: L.AwesomeMarkers.icon({icon: 'info', prefix: 'fa', markerColor: 'orange'}) }).addTo(map);
+ */		var redMarker = L.AwesomeMarkers.icon({
+			icon: 'info',
+			markerColor: 'red',
+			prefix: 'fa',
+		  });
 		
 		const marker = new L.marker([center[0], center[1]],{
-			  /*icon: greenIcon,*/
+			  icon: redMarker,
 			  draggable: true,
-			  riseOnHover: true,
+			  /* riseOnHover: true, */
 			}).on('dragend', (e) => {
 			  setData('walk');
 			});
