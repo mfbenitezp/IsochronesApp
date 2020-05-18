@@ -22,9 +22,7 @@
         }).setView(center, 10);
 		var zoomHome = L.Control.zoomHome();
 		zoomHome.addTo(mymap);
-/* 		var geocoder = L.Control.geocoder().addTo(mymap);
- */		/* L.control.locate({position: 'topleft',}).addTo(mymap); */
-		L.Control.geocoder({
+		var control = L.Control.geocoder({
 			position: 'topleft',
 			suggestMinLength:'3',
 			placeholder:'Buscar...',
@@ -118,6 +116,27 @@
             // zoom to the polygon bounds
             mymap.fitBounds(new L.latLngBounds(bounds.northEast, bounds.southWest));
         }
+		
+		mymap.on('click', function(e) {
+        geocoder.reverse(e.latlng, mymap.options.crs.scale(mymap.getZoom()), function(results) {
+          var r = results[0];
+          if (r) {
+            if (marker) {
+              marker
+                .setLatLng(r.center)
+                .setPopupContent(r.html || r.name)
+                .openPopup();
+            } else {
+              marker = L.marker(r.center)
+                .bindPopup(r.name)
+                .addTo(map)
+                .openPopup();
+            }
+          }
+        setData('walk')});
+		
+		
+		});
 		
 		/*
 		// click event
